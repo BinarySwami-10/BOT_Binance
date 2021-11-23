@@ -1,0 +1,102 @@
+{
+	"Request Headers (3.032 KB)": {
+		"headers": [
+			{
+				"name": "Accept",
+				"value": "*/*"
+			},
+			{
+				"name": "Accept-Encoding",
+				"value": "gzip, deflate, br"
+			},
+			{
+				"name": "Accept-Language",
+				"value": "en-US,en;q=0.5"
+			},
+			{
+				"name": "bnc-uuid",
+				"value": "85c49d92-d35a-45bf-aced-e1dbd0d615c1"
+			},
+			{
+				"name": "clienttype",
+				"value": "web"
+			},
+			{
+				"name": "Connection",
+				"value": "keep-alive"
+			},
+			{
+				"name": "Content-Length",
+				"value": "147"
+			},
+			{
+				"name": "content-type",
+				"value": "application/json"
+			},
+			{
+				"name": "Cookie",
+				"value": "cid=7UYghLLY; __BINANCE_USER_DEVICE_ID__={\"dc17c0efc58b9390aa20d10785755a76\":{\"date\":1626423709770,\"value\":\"1626423740553NDXFYbzqrGDDePKlNIz\"},\"70b2d2601425c1ebf866d924e85499ff\":{\"date\":1629881917422,\"value\":\"162988191602344k9gbckoSgTlfRunQv\"}}; BNC_FV_KEY_EXPIRE=1633147905349; sensorsdata2015jssdkcross=%7B%22distinct_id%22%3A%22112872528%22%2C%22first_id%22%3A%2217c15612be1e2-0e8c5b17a2e9b98-4c3e2778-1148916-17c15612be23cc%22%2C%22props%22%3A%7B%22%24latest_traffic_source_type%22%3A%22%E7%9B%B4%E6%8E%A5%E6%B5%81%E9%87%8F%22%2C%22%24latest_search_keyword%22%3A%22%E6%9C%AA%E5%8F%96%E5%88%B0%E5%80%BC_%E7%9B%B4%E6%8E%A5%E6%89%93%E5%BC%80%22%2C%22%24latest_referrer%22%3A%22%22%7D%2C%22%24device_id%22%3A%2217c15612be1e2-0e8c5b17a2e9b98-4c3e2778-1148916-17c15612be23cc%22%7D; _ga=GA1.2.803409828.1632488640; bnc-uuid=85c49d92-d35a-45bf-aced-e1dbd0d615c1; source=referral; campaign=www.binance.com; userPreferredCurrency=INR_USD; fiat-prefer-currency=INR; home-ui-ab=A; logined=y; monitor-uuid=1c3e91f6-c5b5-4234-ac18-de4da277df89; BNC_FV_KEY=31b1dee41c1aa92bb17c6a57569290cbba8bb58b; cr00=CF6E5443EA833E0068538D5DBDC87D92; d1og=web.112872528.34DBBA90A6FE3790821E6BA28FD6321C; r2o1=web.112872528.E7BA2E0801ADE76139AFAA549943E7B8; f30l=web.112872528.C84AD939ACAD5BC4AE8F756C3B33EA00; p20t=web.112872528.E239D3668EFFA5ABF8D89D68BC6FB954; lang=en"
+			},
+			{
+				"name": "csrftoken",
+				"value": "040f1c9a1ea69d4dc8d5ec84dda005d2"
+			},
+			{
+				"name": "device-info",
+				"value": "eyJzY3JlZW5fcmVzb2x1dGlvbiI6IjgwNCwxNDI5IiwiYXZhaWxhYmxlX3NjcmVlbl9yZXNvbHV0aW9uIjoiODA0LDE0MjkiLCJzeXN0ZW1fdmVyc2lvbiI6IldpbmRvd3MgMTAiLCJicmFuZF9tb2RlbCI6InVua25vd24iLCJzeXN0ZW1fbGFuZyI6ImVuLVVTIiwidGltZXpvbmUiOiJHTVQrNiIsInRpbWV6b25lT2Zmc2V0IjotMzMwLCJ1c2VyX2FnZW50IjoiTW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NDsgcnY6OTIuMCkgR2Vja28vMjAxMDAxMDEgRmlyZWZveC85Mi4wIiwibGlzdF9wbHVnaW4iOiIiLCJjYW52YXNfY29kZSI6IjQzYzY0OWJlIiwid2ViZ2xfdmVuZG9yIjoiR29vZ2xlIEluYy4iLCJ3ZWJnbF9yZW5kZXJlciI6IkFOR0xFIChOVklESUEgR2VGb3JjZSBHVFggOTgwIERpcmVjdDNEMTEgdnNfNV8wIHBzXzVfMCkiLCJhdWRpbyI6IjM1LjczODMyOTU5MzA5MjIiLCJwbGF0Zm9ybSI6IldpbjMyIiwid2ViX3RpbWV6b25lIjoiQXNpYS9Lb2xrYXRhIiwiZGV2aWNlX25hbWUiOiJGaXJlZm94IFY5Mi4wIChXaW5kb3dzKSIsImZpbmdlcnByaW50IjoiOTFhODU1NTQxNDM2NTUwMzc2M2JlMTZmNzhjYmJmNDEiLCJkZXZpY2VfaWQiOiIiLCJyZWxhdGVkX2RldmljZV9pZHMiOiIxNjI2NDIzNzQwNTUzTkRYRllienFyR0REZVBLbE5JeiwxNjI5ODgxOTE2MDIzNDRrOWdiY2tvU2dUbGZSdW5RdiJ9"
+			},
+			{
+				"name": "DNT",
+				"value": "1"
+			},
+			{
+				"name": "fvideo-id",
+				"value": "31b1dee41c1aa92bb17c6a57569290cbba8bb58b"
+			},
+			{
+				"name": "Host",
+				"value": "www.binance.com"
+			},
+			{
+				"name": "lang",
+				"value": "en"
+			},
+			{
+				"name": "Origin",
+				"value": "https://www.binance.com"
+			},
+			{
+				"name": "Referer",
+				"value": "https://www.binance.com/en/delivery/ethusd_perpetual"
+			},
+			{
+				"name": "Sec-Fetch-Dest",
+				"value": "empty"
+			},
+			{
+				"name": "Sec-Fetch-Mode",
+				"value": "cors"
+			},
+			{
+				"name": "Sec-Fetch-Site",
+				"value": "same-origin"
+			},
+			{
+				"name": "TE",
+				"value": "trailers"
+			},
+			{
+				"name": "User-Agent",
+				"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:92.0) Gecko/20100101 Firefox/92.0"
+			},
+			{
+				"name": "x-trace-id",
+				"value": "d650f833-2597-4559-a3e8-84d86314ba7a"
+			},
+			{
+				"name": "x-ui-request-trace",
+				"value": "d650f833-2597-4559-a3e8-84d86314ba7a"
+			}
+		]
+	}
+}
