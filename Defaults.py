@@ -1,4 +1,4 @@
-ETH_BASE={
+ETHUSD_PERP={
 	'token':'ETHUSD_PERP',
 	'size':1,
 	'sizeAccleration':1,
@@ -9,7 +9,7 @@ ETH_BASE={
 	'roundoff':0
 	}
 
-BNB_BASE={
+BNBUSD_PERP={
 	'token':'BNBUSD_PERP',
 	'size':1,
 	'count':6,
@@ -19,7 +19,7 @@ BNB_BASE={
 	'roundoff':1
 	}
 
-BTC_BASE={
+BTCUSD_PERP={
 	'token':'BTCUSD_PERP',
 	'size':1,
 	'sizeAccleration':1,
@@ -29,3 +29,14 @@ BTC_BASE={
 	'delta':300,
  	'roundoff':0
  	}
+
+SANDUSDT={
+	'token':'SANDUSDT',
+	'size':1,
+	'sizeAccleration':1,
+	'stepsize':0.02,
+	'accleration':0,
+	'count':3,
+	'delta':0.03,
+ 	'roundoff':2	
+}

@@ -4,21 +4,21 @@ import MarketDataFetcher
 from mxproxy import mx
 
 def gen_orders(
-	token='BTCUSD_PERP',
+	token='SANDUSDT',
 	size=1,
 	sizeAccleration=1,
 	delta=150,
-	accleration=10,
+	accleration=0,
 	stepsize='1%',
 	count=5,
-	direction='long/short',
+	direction='long',
 	roundoff=1
 	):
 	''' 
 	generates list of orders which is then executed via gui bot
-	markPrice: 	current price of commodity ,
+	lastPrice: 	current price of commodity ,
 	delta:	 	delta for buy and sell margin ,
-	direction: 	strandard long=call, short=put ,
+	direction: 	valid(long,short) ,
 	count: 		amount of orders to be generated ,
 	stepPercent: sliding window step ,
 	accleration : accleration in % for step stepsize.,
@@ -28,41 +28,41 @@ def gen_orders(
 	trigPrice: 	is slghtly away from mark price in the long/short direction when price reached, 
 				executs order with delta mergin.,
 	'''
-	markPrice=round(MarketDataFetcher.get_price(token),roundoff)
-	print({'markPrice':markPrice,'roundoff':roundoff})
+	lastPrice=round(MarketDataFetcher.get_lastprice(token),roundoff)
+	# print({'lastPrice':lastPrice,'roundoff':roundoff})
 	
 	if delta!='default' and '%' in str(delta):
-		delta=(markPrice/100)*int(delta[0:-1])
+		delta=(lastPrice/100)*int(delta[0:-1])
 	if stepsize!='default' and '%' in str(stepsize):
-		stepsize=(markPrice/100)*int(stepsize[0:-1])
+		stepsize=(lastPrice/100)*int(stepsize[0:-1])
 
 
 	delta=round(float(delta),roundoff)
 	stepsize=round(float(stepsize),roundoff)
 	sizeAccleration=float(sizeAccleration)
 	count=int(count)
-	# print(delta,stepsize)
 
 	adaptiveStep=round(stepsize*(accleration/100),3)
 	orderlist=[]
 	for i in range(count):
+		# print('TRACER',orderlist)
 		if direction=='short':
 			sigma=round(stepsize*(i+1),roundoff)
-			marketSpread=f'{round((sigma/markPrice)*100,1)}%'
+			marketSpread=f'{round((sigma/lastPrice)*100,1)}%'
 			stepsize+=adaptiveStep
-			trigPrice=round(markPrice+sigma,roundoff)
+			trigPrice=round(lastPrice+sigma,roundoff)
 			orderlist.append(
-				{'trigPrice':f"{trigPrice:<3}",'takeProfit':trigPrice-delta,'stepDeltaRatio':f'{round(stepsize,2):<4}|{delta}',\
+				{'trigPrice':f"{trigPrice:<3}",'takeProfit':round(trigPrice-delta,roundoff),'stepDeltaRatio':f'{round(stepsize,2):<4}|{delta}',\
 				'Spread':f'{marketSpread}|{sigma:4}','direction':direction,'size':size+(sizeAccleration*i)}
 			)
 
 		if direction=='long':
 			sigma=round(stepsize*(i+1),roundoff)
-			marketSpread=f'{round((-sigma/markPrice)*100,1)}%'
+			marketSpread=f'{round((-sigma/lastPrice)*100,1)}%'
 			stepsize+=adaptiveStep
-			trigPrice=round(markPrice-sigma,roundoff)
+			trigPrice=round(lastPrice-sigma,roundoff)
 			orderlist.append(
-				{'trigPrice':f"{trigPrice:<3}",'takeProfit':trigPrice+delta,'stepDeltaRatio':f'{round(stepsize,2):<4}|{delta}',\
+				{'trigPrice':f"{trigPrice:<3}",'takeProfit':round(trigPrice+delta,roundoff),'stepDeltaRatio':f'{round(stepsize,2):<4}|{delta}',\
 				'Spread':f'{marketSpread}|{sigma:4}','direction':direction,'size':size+(sizeAccleration*i)}
 			)
 
@@ -88,57 +88,6 @@ def orders_exec(orderlist,mode):
 			pyautogui.click(x=1064, y=572)
 		time.sleep(1)
 
-def api_orders_exec(orderlist,mode='OTO'):
-	limit_template={
-	"placeType": "order-form",
-	"positionSide": "LONG",
-	"price": "3107",
-	"quantity": 3,
-	"side": "BUY",
-	"symbol": "ETHUSD_PERP",
-	"timeInForce": "GTC",
-	"type": "LIMIT"
-	}
-	oto_template={
-		"strategyType": "OTO",
-		"subOrderList": [
-			{
-				"firstDrivenId": 0,
-				"positionSide": "LONG",
-				"price": "3107",
-				"quantity": 3,
-				"secondDrivenId": 0,
-				"securityType": "COIN_FUTURES",
-				"side": "BUY",
-				"strategySubId": 1,
-				"symbol": "ETHUSD_PERP",
-				"timeInForce": "GTC",
-				"type": "LIMIT"
-			},
-			{
-				"firstDrivenId": 1,
-				"firstDrivenOn": "PARTIALLY_FILLED_OR_FILLED",
-				"firstTrigger": "PLACE_ORDER",
-				"positionSide": "LONG",
-				"priceProtect": True,
-				"quantity": 3,
-				"secondDrivenId": 0,
-				"securityType": "COIN_FUTURES",
-				"side": "SELL",
-				"stopPrice": "3120",
-				"strategySubId": 2,
-				"symbol": "ETHUSD_PERP",
-				"timeInForce": "GTE_GTC",
-				"type": "TAKE_PROFIT_MARKET",
-				"workingType": "CONTRACT_PRICE"
-			}
-		]
-	}
-	headers={}
-	endpoint='https://www.binance.com/bapi/futures/v1/private/delivery/order/place-order'
-	for o in orderlist:
-		template['positionSide']=o['direction'].upper()
-		template['price']=o['trigPrice']
 
 
 def pyautogui_position_probe():
@@ -147,12 +96,7 @@ def pyautogui_position_probe():
 	print(r)
 
 
-def test():
-	# UNIT_TEST_CHECK_ORDERS
-	ords=gen_orders(**GUIAPP.BNB_LONG)
-	[print(o) for o in ords]
-	ords=gen_orders(**GUIAPP.BNB_SHORT)
-	[print(o) for o in ords]
+
 
 if __name__ == '__main__':
 	import BinanceFuturesOrderGUI as GUIAPP
@@ -164,7 +108,7 @@ if __name__ == '__main__':
 
 	# ords=gen_orders(**GUIAPP.BTC_LONG)
 	# print(GUIAPP.BTC_SHORT)
-	ords=gen_orders(**Defaults.ETH_SHORT)
+	ords=gen_orders(**Defaults.SANDUSDT)
 	[print(o) for o in ords]
 	# pyautogui.press('tab',presses=2,interval=0.25)		
 	# pyautogui.moveTo(x=1189, y=468)
