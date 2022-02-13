@@ -1,7 +1,9 @@
 import pyautogui
 import time
 import MarketDataFetcher
-from mxproxy import mx
+# import modulex as mx
+# from mxproxy import mx
+
 
 def gen_orders(
 	token='SANDUSDT',
@@ -28,78 +30,76 @@ def gen_orders(
 	trigPrice: 	is slghtly away from mark price in the long/short direction when price reached, 
 				executs order with delta mergin.,
 	'''
-	lastPrice=round(MarketDataFetcher.get_lastprice(token),roundoff)
+	lastPrice = round(MarketDataFetcher.get_lastprice(token), roundoff)
 	# print({'lastPrice':lastPrice,'roundoff':roundoff})
-	
-	if delta!='default' and '%' in str(delta):
-		delta=(lastPrice/100)*int(delta[0:-1])
-	if stepsize!='default' and '%' in str(stepsize):
-		stepsize=(lastPrice/100)*int(stepsize[0:-1])
 
+	if delta != 'default' and '%' in str(delta):
+		delta = (lastPrice/100)*int(delta[0:-1])
+	if stepsize != 'default' and '%' in str(stepsize):
+		stepsize = (lastPrice/100)*int(stepsize[0:-1])
 
-	delta=round(float(delta),roundoff)
-	stepsize=round(float(stepsize),roundoff)
-	sizeAccleration=float(sizeAccleration)
-	count=int(count)
+	delta = round(float(delta), roundoff)
+	stepsize = round(float(stepsize), roundoff)
+	sizeAccleration = float(sizeAccleration)
+	count = int(count)
 
-	adaptiveStep=round(stepsize*(accleration/100),3)
-	orderlist=[]
+	adaptiveStep = round(stepsize*(accleration/100), 3)
+	orderlist = []
 	for i in range(count):
 		# print('TRACER',orderlist)
-		if direction=='short':
-			sigma=round(stepsize*(i+1),roundoff)
-			marketSpread=f'{round((sigma/lastPrice)*100,1)}%'
-			stepsize+=adaptiveStep
-			trigPrice=round(lastPrice+sigma,roundoff)
+		if direction == 'short':
+			sigma = round(stepsize*(i+1), roundoff)
+			marketSpread = f'{round((sigma/lastPrice)*100,1)}%'
+			stepsize += adaptiveStep
+			trigPrice = round(lastPrice+sigma, roundoff)
 			orderlist.append(
-				{'trigPrice':f"{trigPrice:<3}",'takeProfit':round(trigPrice-delta,roundoff),'stepDeltaRatio':f'{round(stepsize,2):<4}|{delta}',\
-				'Spread':f'{marketSpread}|{sigma:4}','direction':direction,'size':size+(sizeAccleration*i)}
-			)
+                            {'trigPrice': f"{trigPrice:<3}", 'takeProfit': round(trigPrice-delta, roundoff), 'stepDeltaRatio': f'{round(stepsize,2):<4}|{delta}',
+                             'Spread': f'{marketSpread}|{sigma:4}', 'direction': direction, 'size': size+(sizeAccleration*i)}
+                            )
 
-		if direction=='long':
-			sigma=round(stepsize*(i+1),roundoff)
-			marketSpread=f'{round((-sigma/lastPrice)*100,1)}%'
-			stepsize+=adaptiveStep
-			trigPrice=round(lastPrice-sigma,roundoff)
+		if direction == 'long':
+			sigma = round(stepsize*(i+1), roundoff)
+			marketSpread = f'{round((-sigma/lastPrice)*100,1)}%'
+			stepsize += adaptiveStep
+			trigPrice = round(lastPrice-sigma, roundoff)
 			orderlist.append(
-				{'trigPrice':f"{trigPrice:<3}",'takeProfit':round(trigPrice+delta,roundoff),'stepDeltaRatio':f'{round(stepsize,2):<4}|{delta}',\
-				'Spread':f'{marketSpread}|{sigma:4}','direction':direction,'size':size+(sizeAccleration*i)}
-			)
+                            {'trigPrice': f"{trigPrice:<3}", 'takeProfit': round(trigPrice+delta, roundoff), 'stepDeltaRatio': f'{round(stepsize,2):<4}|{delta}',
+                             'Spread': f'{marketSpread}|{sigma:4}', 'direction': direction, 'size': size+(sizeAccleration*i)}
+                            )
 
 	return orderlist
 
 
-def orders_exec(orderlist,mode):
+def orders_exec(orderlist, mode):
 	'''requirements: binance future screen in view | TP/SL ticked | post only mode (good) '''
 	[print(o) for o in orderlist]
-	if mode=='demo': print("!!! DEMO MODE !!!") ; return
-	priceInputField=(1115,225)
+	if mode == 'demo':
+		print("!!! DEMO MODE !!!")
+		return
+	priceInputField = (1115, 225)
 	for x in orderlist:
-		pyautogui.click(priceInputField,clicks=3)
+		pyautogui.click(priceInputField, clicks=3)
 		pyautogui.write(str(x['trigPrice']))
 		pyautogui.press('tab')
 		# pyautogui.press('tab')
 		pyautogui.write(str(x['size']))
 		pyautogui.press('tab')
 		pyautogui.write(str(x['takeProfit']))
-		if x['direction']=='short':
+		if x['direction'] == 'short':
 			pyautogui.click(x=1189, y=572)
-		if x['direction']=='long':
+		if x['direction'] == 'long':
 			pyautogui.click(x=1064, y=572)
 		time.sleep(1)
 
 
-
 def pyautogui_position_probe():
 	time.sleep(2)
-	r=pyautogui.position()
+	r = pyautogui.position()
 	print(r)
 
 
-
-
 if __name__ == '__main__':
-	import BinanceFuturesOrderGUI as GUIAPP
+	# import BinanceFuturesOrderGUI as GUIAPP
 	import time
 	import Defaults
 
@@ -108,15 +108,12 @@ if __name__ == '__main__':
 
 	# ords=gen_orders(**GUIAPP.BTC_LONG)
 	# print(GUIAPP.BTC_SHORT)
-	ords=gen_orders(**Defaults.SANDUSDT)
+	ords = gen_orders(**Defaults.SANDUSDT)
 	[print(o) for o in ords]
-	# pyautogui.press('tab',presses=2,interval=0.25)		
+	# pyautogui.press('tab',presses=2,interval=0.25)
 	# pyautogui.moveTo(x=1189, y=468)
 
-
-
-	
-	RULES= '''
+	RULES = '''
 	#TRADING RULES 
 	#---STEP SIZE 1.5X DELTA
 	#---STEP SIZE ~1% of current price

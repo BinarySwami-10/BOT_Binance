@@ -1,7 +1,7 @@
-
+import modulex as mx
 def binance_recent_trades():                                        
 	import pandas as pd
-	mktData=get_page('https://dapi.binance.com/dapi/v1/trades?symbol=ETHUSD_PERP').json()
+	mktData=mx.get_page('https://dapi.binance.com/dapi/v1/trades?symbol=ETHUSD_PERP').json()
 	dataframe=pd.DataFrame(mktData)[::-1]
 	for x in dataframe.iterrows():
 		print(x)
@@ -12,3 +12,5 @@ def binance_recent_trades():
 	for i in reversed(mktData):
 		print(f"{i['qty']:6}{i['price']}")
 		print(f"{i.items()}")
+
+binance_recent_trades()
