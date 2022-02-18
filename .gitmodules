@@ -1,0 +1,8 @@
+[submodule "Binance_Futures_python"]
+	url = "http://github.com/Binance-docs/Binance_Futures_python.git"
+[submodule "Binance_Futures_Python"]
+	path = Binance_Futures_Python
+	url = https://github.com/Binance-docs/Binance_Futures_python.git
+[submodule "Binance_Futures_Pythons"]
+	path = Binance_Futures_Pythons
+	url = https://github.com/Binance-docs/Binance_Futures_python.git

@@ -1,15 +1,17 @@
 import pyautogui
 import time
-import MarketDataFetcher
+import DataFetcher
+from data import Defaults
 # import modulex as mx
 # from mxproxy import mx
 
 
 def gen_orders(
-	token='SANDUSDT',
+	symbol='SANDUSDT',
 	size=1,
 	sizeAccleration=1,
-	delta=150,
+	delta='2%',
+	sltpRatio=3,
 	accleration=0,
 	stepsize='1%',
 	count=5,
@@ -18,8 +20,9 @@ def gen_orders(
 	):
 	''' 
 	generates list of orders which is then executed via gui bot
-	lastPrice: 	current price of commodity ,
+	lastPrice: 	current price of cryptocurrency instrument ,
 	delta:	 	delta for buy and sell margin ,
+	sltpRatio: ratio between take profit and stop loss,
 	direction: 	valid(long,short) ,
 	count: 		amount of orders to be generated ,
 	stepPercent: sliding window step ,
@@ -30,88 +33,68 @@ def gen_orders(
 	trigPrice: 	is slghtly away from mark price in the long/short direction when price reached, 
 				executs order with delta mergin.,
 	'''
-	lastPrice = round(MarketDataFetcher.get_lastprice(token), roundoff)
+	lastPrice = round(DataFetcher.get_lastprice(symbol), roundoff)
 	# print({'lastPrice':lastPrice,'roundoff':roundoff})
 
-	if delta != 'default' and '%' in str(delta):
-		delta = (lastPrice/100)*int(delta[0:-1])
-	if stepsize != 'default' and '%' in str(stepsize):
-		stepsize = (lastPrice/100)*int(stepsize[0:-1])
+	if '%' in str(delta):
+		delta = (lastPrice / 100) * float(delta[0:-1])
+	if '%' in str(stepsize):
+		stepsize = (lastPrice / 100) * float(stepsize[0:-1])
 
 	delta = round(float(delta), roundoff)
 	stepsize = round(float(stepsize), roundoff)
 	sizeAccleration = float(sizeAccleration)
 	count = int(count)
 
-	adaptiveStep = round(stepsize*(accleration/100), 3)
+	adaptiveStep = round(stepsize * (accleration / 100), 3)
 	orderlist = []
 	for i in range(count):
 		# print('TRACER',orderlist)
 		if direction == 'short':
-			sigma = round(stepsize*(i+1), roundoff)
+			sigma = round(stepsize * (i + 1), roundoff)
 			marketSpread = f'{round((sigma/lastPrice)*100,1)}%'
 			stepsize += adaptiveStep
-			trigPrice = round(lastPrice+sigma, roundoff)
-			orderlist.append(
-                            {'trigPrice': f"{trigPrice:<3}", 'takeProfit': round(trigPrice-delta, roundoff), 'stepDeltaRatio': f'{round(stepsize,2):<4}|{delta}',
-                             'Spread': f'{marketSpread}|{sigma:4}', 'direction': direction, 'size': size+(sizeAccleration*i)}
-                            )
+			trigPrice = round(lastPrice + sigma, roundoff)
+			orderlist.append({
+								'symbol':symbol,
+								'trigPrice': format(trigPrice,'.4f'),
+								'takeProfit': round(trigPrice - delta, roundoff),
+								'stopLoss': round(trigPrice + delta*sltpRatio, roundoff),
+								'stepDeltaRatio': f'{round(stepsize,3):<4}|{delta}',
+								'Spread': f'{marketSpread}|{sigma:4}',
+								'direction': direction,
+								'size': size + (sizeAccleration * i)
+							})
 
 		if direction == 'long':
-			sigma = round(stepsize*(i+1), roundoff)
+			sigma = round(stepsize * (i + 1), roundoff)
 			marketSpread = f'{round((-sigma/lastPrice)*100,1)}%'
 			stepsize += adaptiveStep
-			trigPrice = round(lastPrice-sigma, roundoff)
-			orderlist.append(
-                            {'trigPrice': f"{trigPrice:<3}", 'takeProfit': round(trigPrice+delta, roundoff), 'stepDeltaRatio': f'{round(stepsize,2):<4}|{delta}',
-                             'Spread': f'{marketSpread}|{sigma:4}', 'direction': direction, 'size': size+(sizeAccleration*i)}
-                            )
+			trigPrice = round(lastPrice - sigma, roundoff)
+			orderlist.append({
+								'symbol':symbol,
+								'trigPrice': format(trigPrice,'.4f'),
+								'takeProfit': round(trigPrice + delta, roundoff),
+								'stopLoss': round(trigPrice - delta*sltpRatio, roundoff),
+								'stepDeltaRatio': f'{round(stepsize,3):<4}|{delta}',
+								'Spread': f'{marketSpread}|{sigma:4}',
+								'direction': direction,
+								'size': size + (sizeAccleration * i)
+							})
 
 	return orderlist
 
 
-def orders_exec(orderlist, mode):
-	'''requirements: binance future screen in view | TP/SL ticked | post only mode (good) '''
-	[print(o) for o in orderlist]
-	if mode == 'demo':
-		print("!!! DEMO MODE !!!")
-		return
-	priceInputField = (1115, 225)
-	for x in orderlist:
-		pyautogui.click(priceInputField, clicks=3)
-		pyautogui.write(str(x['trigPrice']))
-		pyautogui.press('tab')
-		# pyautogui.press('tab')
-		pyautogui.write(str(x['size']))
-		pyautogui.press('tab')
-		pyautogui.write(str(x['takeProfit']))
-		if x['direction'] == 'short':
-			pyautogui.click(x=1189, y=572)
-		if x['direction'] == 'long':
-			pyautogui.click(x=1064, y=572)
-		time.sleep(1)
-
-
-def pyautogui_position_probe():
-	time.sleep(2)
-	r = pyautogui.position()
-	print(r)
-
-
 if __name__ == '__main__':
 	# import BinanceFuturesOrderGUI as GUIAPP
-	import time
-	import Defaults
 
 	# pyautogui.moveTo(x=1064, y=468)
-	# position_prober()
-
-	# ords=gen_orders(**GUIAPP.BTC_LONG)
-	# print(GUIAPP.BTC_SHORT)
-	ords = gen_orders(**Defaults.SANDUSDT)
-	[print(o) for o in ords]
 	# pyautogui.press('tab',presses=2,interval=0.25)
 	# pyautogui.moveTo(x=1189, y=468)
+	# position_prober()
+
+	ords = gen_orders(**Defaults.SANDUSDT,direction='short')
+	[print(o) for o in ords]
 
 	RULES = '''
 	#TRADING RULES 

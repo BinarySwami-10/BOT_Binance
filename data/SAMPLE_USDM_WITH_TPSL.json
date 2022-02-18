@@ -1,0 +1,60 @@
+
+{
+    "strategyType": "OTOCO",
+    "subOrderList": [
+        {
+            "strategySubId": 1,
+            "firstDrivenId": 0,
+            "secondDrivenId": 0,
+            "side": "BUY",
+            "positionSide": "BOTH",
+            "symbol": "{{TICKERSYMBOL}}",
+            "type": "LIMIT",
+            "timeInForce": "GTC",
+            "quantity": 100,
+            "price": "{{FLOAT}}",
+            "securityType": "USDT_FUTURES",
+            "reduceOnly": false
+        },
+        {
+            "side": "SELL",
+            "positionSide": "BOTH",
+            "symbol": "{{TICKERSYMBOL}}",
+            "securityType": "USDT_FUTURES",
+            "firstTrigger": "PLACE_ORDER",
+            "firstDrivenOn": "PARTIALLY_FILLED_OR_FILLED",
+            "timeInForce": "GTE_GTC",
+            "reduceOnly": true,
+            "quantity": 100,
+            "strategySubId": 2,
+            "firstDrivenId": 1,
+            "secondDrivenId": 3,
+            "secondDrivenOn": "PARTIALLY_FILLED_OR_FILLED",
+            "secondTrigger": "CANCEL_ORDER",
+            "stopPrice": "{{FLOAT}}",
+            "workingType": "MARK_PRICE",
+            "type": "TAKE_PROFIT_MARKET",
+            "priceProtect": true
+        },
+        {
+            "side": "SELL",
+            "positionSide": "BOTH",
+            "symbol": "{{TICKERSYMBOL}}",
+            "securityType": "USDT_FUTURES",
+            "firstTrigger": "PLACE_ORDER",
+            "firstDrivenOn": "PARTIALLY_FILLED_OR_FILLED",
+            "timeInForce": "GTE_GTC",
+            "reduceOnly": true,
+            "quantity": 100,
+            "strategySubId": 3,
+            "firstDrivenId": 1,
+            "secondDrivenId": 2,
+            "secondDrivenOn": "PARTIALLY_FILLED_OR_FILLED",
+            "secondTrigger": "CANCEL_ORDER",
+            "stopPrice": "{{FLOAT}}",
+            "workingType": "MARK_PRICE",
+            "type": "STOP_MARKET",
+            "priceProtect": true
+        }
+    ]
+}
