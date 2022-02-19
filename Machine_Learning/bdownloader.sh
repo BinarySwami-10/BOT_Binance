@@ -13,10 +13,13 @@ for symbol in ${symbols[@]}; do
   for interval in ${intervals[@]}; do
     for year in ${years[@]}; do
       for month in ${months[@]}; do
-        if [[ ! -f  ${symbol}-${interval}-${year}-${month}.zip ]]; then
+        fname=${symbol}-${interval}-${year}-${month}.zip
+        if [[ ! -f  $fname ]]; then
           url="${baseurl}/${symbol}/${interval}/${symbol}-${interval}-${year}-${month}.zip"
           response=$(wget -q ${url}) &
           echo "downloaded" $url
+        else
+          echo "ALREADY EXISTS: ${symbol}-${interval}-${year}-${month}.zip "
         fi
         
       done
